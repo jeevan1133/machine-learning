@@ -61,8 +61,6 @@ for c = 1:num_labels
 % =====What we are doing here is copying the value of theta to a particular row of all_theta=======
   all_theta(c,:) = theta; 
 
-
-
 end
 
 
