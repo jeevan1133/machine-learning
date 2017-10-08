@@ -1,0 +1,9 @@
+*.mat
+octave-workspace
+lib
+*.DS_Store
+.DS_Store
+**/.DS_Store
+
+
+.gitignore
