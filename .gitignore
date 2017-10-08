@@ -4,6 +4,9 @@ lib
 *.DS_Store
 .DS_Store
 **/.DS_Store
+machine-lear**
+**learning**
 
-
+token.mat
+**token
 .gitignore
