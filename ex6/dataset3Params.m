@@ -4,6 +4,7 @@ function [C, sigma] = dataset3Params(X, y, Xval, yval)
 %with RBF kernel
 %   [C, sigma] = DATASET3PARAMS(X, y, Xval, yval) returns your choice of C and
 %   sigma. You should complete this function to return the optimal C and
+
 %   sigma based on a cross-validation set.
 %
 
@@ -22,33 +23,20 @@ sigma = 0.3;
 %  Note: You can compute the prediction error using
 %        mean(double(predictions ~= yval))
 %
-CValues= [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
-sigmaValues =[0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
-m = size(CValues,2);
-n = size(sigmaValues, 2);
-rowValues = 0;
 results = eye(64,3);
-for i = 1:m
-  for j =1:n
-    rowValues++;
-    c_temp = CValues(i);
-    s_temp = sigmaValues(j);
-    model = svmTrain(X,y,c_temp, @(X, y) gaussianKernel(X, y, s_temp));
-    predictions = svmPredict(model, Xval);
-    prediction_error = mean(double(predictions~=yval));
-    results(rowValues,:) = [ c_temp s_temp prediction_error];
-    fprintf("\n c_temp is: %f" , c_temp);
-    fprintf("\n s_temp is: %f", s_temp);
-  end
+rowValues = 0;
+for C_test = [0.01 0.03 0.1 0.3 1, 3, 10 30]
+    for sigma_test = [0.01 0.03 0.1 0.3 1, 3, 10 30]
+        rowValues = rowValues +1;
+        model = svmTrain(X, y, C_test, @(x1, x2) gaussianKernel(x1, x2, sigma_test));
+        predictions = svmPredict(model, Xval);
+        prediction_error = mean(double(predictions ~= yval));
+        results(rowValues,:) = [C_test, sigma_test, prediction_error];     
+    end
 end
-
-[sorted_results dummy] = min(sortrows(results, 3)); % sort matrix by column #3, the error, ascending
-fprintf("\n the sorted_results are %f \n", sorted_results)
-C = sorted_results(1);
-sigma = sorted_results(2);
-
-
-
+sorted_results = sortrows(results, 3); % sort matrix by column #3, the error, ascending
+C = sorted_results(1,1);
+sigma = sorted_results(1,2);
 
 % =========================================================================
 
